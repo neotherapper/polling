@@ -1,0 +1,46 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Questions</h3>
+	</div>
+	<div class="panel-body">
+		<div data-ng-hide="polls.length > 0">
+			<p>
+			You have no questions saved.
+			</p>
+		</div>
+
+		<button class="btn btn-primary" data-ui-sref="admin.options">Back</button>
+		<button class="btn btn-primary" data-ui-sref="admin.newquestion">Create New Question</button>
+
+		<div class="polls-container" data-ng-show="polls.length > 0">
+			<div class="poll panel panel-default" data-ng-repeat="poll in polls">
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+								<th class="col-xs-11">Question</th>
+								<th class="col-xs-1">Times Chosen</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td> {{ poll.question.text }} </td>
+								<td> {{ poll.question.times }} </td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table">
+						<thead>
+								<th class="col-xs-11">Answer</th>
+								<th class="col-xs-1">Times Chosen</th>
+						</thead>
+						<tbody>
+							<tr data-ng-repeat="answer in poll.answers track by $index">
+								<td> {{ answer.text }} </td>
+								<td> {{ answer.times }} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>		
+		</div>
+	</div>
+</div>

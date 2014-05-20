@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Add New Question</h3>
+	</div>
+	<div class="panel-body add-new-question-form">
+
+		<form name="newQuestionForm" class="dynamic-fields" data-ng-submit="submitQuestion(newQuestionForm)" data-ng-init="newQuestionForm.answers = []" fields="2" maxfields="4">
+
+			<input type="text" class="form-control" data-ng-model="newQuestionForm.newQuestion" placeholder="Question" required></input>
+
+			<input class="form-control" type="text" placeholder="Answer {{ $index+1 }}" data-ng-repeat="field in fields track by $index" data-ng-init="newQuestionForm.answers[$index] = {}" data-ng-model="newQuestionForm.answers[$index].text" required></input>
+
+			<button class="btn btn-primary" data-ui-sref="admin.options">Back</button>
+			<button class="btn btn-primary" data-ng-click="addField()">Add Another Answer</button>
+			<button type="submit" class="btn btn-primary">Next</button>
+
+		</form>
+
+	</div>
+</div>

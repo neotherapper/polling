@@ -1,0 +1,21 @@
+<div data-ng-show="polls">
+	<div class="panel panel-info" data-ng-repeat="poll in polls track by $index">
+		<div class="panel-heading">
+			<h3 class="panel-title"> {{ poll.question.text }} </h3>
+		</div>
+		<div class="panel-body">
+			<p data-ng-show="isPollAnswered(poll)">
+				You have already answered this poll.
+			</p>
+			<div class="list-group">
+				<a class="list-group-item" data-ng-class="{'active': answer.selected}" data-ng-click="selectAnswer(poll, answer)" data-ng-repeat="answer in poll.answers track by $index"> {{ answer.text }}</a>
+			</div>
+		</div>
+	</div>	
+</div>
+<div data-ng-hide="polls">
+	<p>
+		There are no saved polls.
+	</p>
+	<button class="btn btn-primary" data-ui-sref="admin.newquestion">Create New Poll</button>
+</div>
