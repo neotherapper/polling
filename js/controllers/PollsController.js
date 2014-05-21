@@ -1,4 +1,4 @@
-pollingApp.controller('PollsController', function($window, $rootScope, $scope, $state, ipCookie) {
+pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie) {
 	$scope.polls = [];
 	$scope.answeredQuestions = {};
 

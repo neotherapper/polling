@@ -6,11 +6,27 @@
     <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body data-ng-app="pollingApp">
-	<div class="main-ui-view" data-ui-view></div>
+    <div class="container">
+      <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+              <div class="navbar-header">
+                  <ul class="nav navbar-nav">
+                      <li><a href="#/admin">Admin</a></li>
+                      <li><a href="#/poll/pollList">Poll List</a></li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+
+      <div class="main-ui-view" data-ui-view></div>
+     <!-- <ng-view></ng-view> -->
+
+    </div>
+	
 
 <script src="http://localhost:4000/socket.io/socket.io.js"></script>
 <script src="node/socket.js"></script>
-<script src='lib/jquery-2.0.3.min.js'></script>
+<script src='lib/jquery-2.1.1.min.js'></script>
 <script src='lib/angular.min.js'></script>
 <script src='lib/angular-route.min.js'></script>
 <script src='lib/angular-resource.min.js'></script>
@@ -23,9 +39,12 @@
 
 <!-- Controllers -->
 <script src="js/controllers/PollsController.js"></script>
+<script src="js/controllers/PollListController.js"></script>
+<script src="js/controllers/PollsController.js"></script>
 
 <!-- Directives -->
 <script src="js/directives/dynamicFields.js"></script>
+<script src="js/directives/pollview.js"></script>
 
 </body>
 </html>

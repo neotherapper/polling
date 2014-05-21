@@ -1,32 +1,49 @@
-var pollingApp = angular.module('pollingApp', ['ngRoute', 'ngResource', 'ui.router', 'ivpusic.cookie']).
-	config(function($stateProvider, $urlRouterProvider) {
-		$urlRouterProvider.otherwise('/poll');
+'use strict';
 
-		$stateProvider
-		.state('admin', {
-			url: '/admin',
-			templateUrl: "views/Admin.html",
-			controller: "PollsController"
-		})
+var pollingApp = angular.module('pollingApp', [
+	'ngRoute',
+	'ngResource',
+	'ui.router',
+	'ivpusic.cookie'
+	]
+);
 
-		.state('admin.options', {
-			url: '/options',
-			templateUrl: "views/AdminMenu.html"
-		})
+pollingApp.config(function ($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise('/poll');
 
-		.state('admin.newquestion', {
-			url: '/new-question',
-			templateUrl: "views/Admin/NewQuestion.html"
-		})
+	$stateProvider
+	.state('admin', {
+		url: '/admin',
+		templateUrl: "views/Admin.html",
+		controller: "PollsController"
+	})
 
-		.state('admin.viewquestions', {
-			url: '/view-questions',
-			templateUrl: "views/Admin/ViewQuestions.html"
-		})
+	.state('admin.options', {
+		url: '/options',
+		templateUrl: "views/AdminMenu.html"
+	})
 
-		.state('poll', {
-			url: '/poll',
-			templateUrl: "views/Poll.html",
-			controller: "PollsController"
-		});
+	.state('admin.newquestion', {
+		url: '/new-question',
+		templateUrl: "views/Admin/NewQuestion.html"
+	})
+
+	.state('admin.viewquestions', {
+		url: '/view-questions',
+		templateUrl: "views/Admin/ViewQuestions.html"
+	})
+
+	.state('poll', {
+		url: '/poll',
+		templateUrl: "views/poll/Poll.html",
+		controller: "PollsController"
+	})
+
+	.state('poll.list', {
+		url: '/pollList',
+		templateUrl: "views/poll/pollingList.html",
+		controller: "PollingListController"
 	});
+
+		
+});
