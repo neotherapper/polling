@@ -8,7 +8,7 @@
 pollingApp.controller('PollingListController',
     function PollingListController($scope,  Polls) {
         Polls.get(function(Polls) {
-            $scope.polls = Polls;
+            $scope.polls = Polls.Pollquestions;
         });
       }
-  );
+);

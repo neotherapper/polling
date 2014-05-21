@@ -10,7 +10,7 @@ pollingApp.directive('pollView', function() {
         replace: true,
         templateUrl: 'views/directives/pollView.html',
         scope: {
-            poll: '='
+            poll: '=poll'
           }
         };
   });

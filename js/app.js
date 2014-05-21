@@ -39,8 +39,8 @@ pollingApp.config(function ($stateProvider, $urlRouterProvider) {
 		controller: "PollsController"
 	})
 
-	.state('poll.list', {
-		url: '/pollList',
+	.state('polllist', {
+		url: '/list',
 		templateUrl: "views/poll/pollingList.html",
 		controller: "PollingListController"
 	});

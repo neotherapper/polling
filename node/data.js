@@ -1,1 +1,1 @@
-{"id":0,"question":{"text":"fruit?","times":1},"answers":[{"text":"banana","times":1,"selected":true},{"text":"apple","times":0}]}
+{"id":0,"question":{"text":"fruit?","times":1},"answers":[{"text":"banana","times":1,"selected":true},{"text":"apple","times":0}]}{"id":1,"question":{"text":"Color?","times":0},"answers":[{"text":"green","times":0},{"text":"yellow","times":0}]}
