@@ -1,12 +1,12 @@
 var http = require("http"),
     url = require("url"),
     path = require("path"),
-    fs = require("fs")
+    fs = require("fs"),
     port = process.argv[2] || 8888;
 var app = require('http').createServer(function(request, response) {
  
-  var uri = url.parse(request.url).pathname
-    , filename = path.join(__dirname, "/../", uri);
+  var uri = url.parse(request.url).pathname,
+        filename = path.join(__dirname, "/../", uri);
   
   path.exists(filename, function(exists) {
     if(!exists) {
@@ -19,7 +19,7 @@ var app = require('http').createServer(function(request, response) {
     if (fs.statSync(filename).isDirectory()) filename += '/index.html';
  
     fs.readFile(filename, "binary", function(err, file) {
-      if(err) {        
+      if(err) {
         response.writeHead(500, {"Content-Type": "text/plain"});
         response.write(err + "\n");
         response.end();
@@ -31,8 +31,10 @@ var app = require('http').createServer(function(request, response) {
       response.end();
     });
   });
-}), 
-io = require('socket.io').listen(app), 
+}),
+// io = require('socket.io',).listen(app),
+// fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
+io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app),
 fs = require('fs');
 
 app.listen(4000);
