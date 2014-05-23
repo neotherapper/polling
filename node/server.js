@@ -3,6 +3,8 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs"),
     port = process.argv[2] || 8888;
+
+//creation of HTTP Server
 var app = http.createServer(function(request, response) {
  
   var uri = url.parse(request.url).pathname,
@@ -40,16 +42,25 @@ fs = require('fs');
 app.listen(4000);
 
 io.sockets.on('connection', function (socket) {
+
+            // when we receive newQuestion from the client we .. 
+            // .. write to the data.js file the answer from Add New Question form
 	socket.on('newQuestion', function (data) {
 		fs.appendFile(__dirname+'/data.js', JSON.stringify(data) + '\n', function(err) {
 			if (err) throw err;
+                                        // we tell the client that the server has saved the Question.
 			socket.emit('newQuestionSaved');
 		});
 	});
 
+            // when we receive pollUpdate from the client we ..
+            // .. receive the poll updated object from the client and ..
 	socket.on('pollUpdate', function(poll) {
+                         // .. read the data.js file  and put them to .. 
+                         //  .. contents  that will be an array with the values of data split by  '\n'
 		var line, parsedLine, contents = fs.readFileSync(__dirname+'/data.js', {encoding: 'utf8'}).split('\n');
 		
+                          // console.log(contents +  '   this is the array contents');
 		for (line in contents) {
 			if (contents[line].length > 0) {
 				parsedLine = JSON.parse(contents[line]);
@@ -66,9 +77,15 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 
+             // when we receive questionsRequest from the client we...
+             // .. read data.js  and we send back the data stored to the client
 	socket.on('questionsRequest', function() {
 		fs.readFile(__dirname+'/data.js', {encoding: 'utf8'}, function(err, data) {
-			socket.emit('questionsData', data.split('\n'));
+                                        // the response will be an array with the values of data split by  '\n'
+                                        // var response = data;
+                                        var response = data.split('\n');
+                                        // console.log(response + '  this is the data sent to the client');
+			socket.emit('questionsData', response);
 		});
 
 	});

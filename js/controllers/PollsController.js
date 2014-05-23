@@ -1,11 +1,20 @@
 'use strict';
 
-pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie) {
+pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie, Polls, socket) {
+	// our data
+	// Polls.get(function(Polls) {
+	// 	$scope.polls2=  Polls.Pollquestions;
+	// });
+
 	$scope.polls = [];
 	$scope.answeredQuestions = {};
 
+	// we send to the server is questionsRequest
 	socket.emit('questionsRequest');
 
+	// on refresh we ..
+	// send to the server a questionsRequest
+	// and we check for answered questions.
 	$scope.refresh = function() {
 		socket.emit('questionsRequest');
 		$scope.checkAnsweredQuestions();
@@ -13,17 +22,20 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 
 	$scope.checkAnsweredQuestions = function() {
 		var cookieData = ipCookie('answeredPolls');
-		console.log(cookieData);
+		console.log(cookieData + ' -->  this is cookieData');
 
 		if (cookieData) {
 			$scope.answeredQuestions = cookieData;
 		}
 	};
 
+	//parameter is a poll object
+	// returns True if Poll is answered --> if poll.id exists within array answeredQuestions
 	$scope.isPollAnswered = function(poll) {
 		return $scope.answeredQuestions[poll.id] ? true : false;
 	};
 
+	//parameters is a poll object and the answer from ui
 	$scope.selectAnswer = function(poll, answer) {
 		if ($scope.answeredQuestions[poll.id]) {
 			return false;
@@ -32,6 +44,7 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 		poll.question.times++;
 		answer.selected = true;
 		$scope.updateCookie(poll);
+		// we tell the server that a pollUpdate has occured.
 		socket.emit('pollUpdate', poll);
 	};
 
@@ -54,45 +67,54 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 		$scope.refresh();
 	};
 
+	// function for manipulating the Add New Question form at new-question
+	// parameter is a form object
 	$scope.submitQuestion = function(form) {
 		var answer;
 
+		// we instantiate that times is 0 for every answer.
 		for (answer in form.answers) {
 			form.answers[answer].times = 0;
 		}
-
-		socket.emit('newQuestion', {
+		//Creation of the Object that will be sent as question
+		var newQ = {
 			'id': $scope.polls.length,
 			'question': {
 				'text': form.newQuestion,
 				'times': 0
 			},
 			'answers': form.answers
-		});
+		}
+
+		// we send newQuestion to the server that has
+		// the new question object attached..
+		socket.emit('newQuestion', newQ);
 	};
 
 	socket.on('pollUpdateSuccess', function(poll) {
 		$scope.refresh();
 	});
 
+	//when we receive from the server that a new question is saved we ..
 	socket.on('newQuestionSaved', function(data) {
 		$scope.refresh();
-		// when a new question is saved you are redirected to ViewQuestions.html
+		// you are redirected to ViewQuestions.html
 		$state.go('admin.viewquestions');
 	});
 
+	// when we receive from the server the data for our questions we ..
 	socket.on('questionsData', function(data) {
-		$scope.$apply(function() {
-			$scope.polls = [];
+		console.log(data + ' this is the data we receive for the server');
+
+		$scope.polls = [];
 			var poll;
 
-			console.log(data);
 			for (poll in data) {
-				// console.log(poll + '  -> this is poll');
-				// console.log(data[poll] + '    --> this is data[poll]');
+				console.log(data[poll] + '    --> this is data[poll]');
 				if (data[poll]) {
 					if (data[poll].length > 0) {
 						//error handling for json parsing
+						// without that we get an error
 						try {
 							data[poll] = JSON.parse(data[poll]);
 							console.log(data[poll] + '    --> this is parsed data[poll]');
@@ -104,7 +126,6 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 					}
 				}
 			}
-		});
 	});
 
 	$scope.checkAnsweredQuestions();
