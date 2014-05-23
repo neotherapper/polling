@@ -2,6 +2,7 @@
 
 var pollingApp = angular.module('pollingApp', [
 	'ngRoute',
+	'ui.bootstrap',
 	'ngResource',
 	'ui.router',
 	'ivpusic.cookie'
@@ -9,18 +10,18 @@ var pollingApp = angular.module('pollingApp', [
 );
 
 pollingApp.config(function ($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.otherwise('/poll');
+	$urlRouterProvider.otherwise('/admin');
 
 	$stateProvider
 	.state('admin', {
 		url: '/admin',
-		templateUrl: "views/Admin.html",
+		templateUrl: "views/Admin/Admin.html",
 		controller: "PollsController"
 	})
 
 	.state('admin.options', {
 		url: '/options',
-		templateUrl: "views/AdminMenu.html"
+		templateUrl: "views/Admin/AdminMenu.html"
 	})
 
 	.state('admin.newquestion', {
@@ -39,9 +40,15 @@ pollingApp.config(function ($stateProvider, $urlRouterProvider) {
 		controller: "PollsController"
 	})
 
-	.state('polllist', {
+	.state('admin.polllist', {
 		url: '/list',
 		templateUrl: "views/poll/pollingList.html",
+		controller: "PollingListController"
+	})
+
+	.state('admin.pollist.pollitem', {
+		url: '/:pollid',
+		templateUrl: "views/poll/pollitem.html",
 		controller: "PollingListController"
 	});
 

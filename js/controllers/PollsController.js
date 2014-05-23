@@ -1,3 +1,5 @@
+'use strict';
+
 pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie) {
 	$scope.polls = [];
 	$scope.answeredQuestions = {};
@@ -11,6 +13,7 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 
 	$scope.checkAnsweredQuestions = function() {
 		var cookieData = ipCookie('answeredPolls');
+		console.log(cookieData);
 
 		if (cookieData) {
 			$scope.answeredQuestions = cookieData;
@@ -74,6 +77,7 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 
 	socket.on('newQuestionSaved', function(data) {
 		$scope.refresh();
+		// when a new question is saved you are redirected to ViewQuestions.html
 		$state.go('admin.viewquestions');
 	});
 
@@ -84,11 +88,14 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 
 			console.log(data);
 			for (poll in data) {
+				// console.log(poll + '  -> this is poll');
+				// console.log(data[poll] + '    --> this is data[poll]');
 				if (data[poll]) {
 					if (data[poll].length > 0) {
 						//error handling for json parsing
 						try {
 							data[poll] = JSON.parse(data[poll]);
+							console.log(data[poll] + '    --> this is parsed data[poll]');
 							$scope.polls.unshift(data[poll]);
 						} catch (e) {
 							console.log('error parsing json for data[poll]');

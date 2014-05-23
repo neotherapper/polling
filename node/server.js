@@ -3,7 +3,7 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs"),
     port = process.argv[2] || 8888;
-var app = require('http').createServer(function(request, response) {
+var app = http.createServer(function(request, response) {
  
   var uri = url.parse(request.url).pathname,
         filename = path.join(__dirname, "/../", uri);
@@ -71,5 +71,5 @@ io.sockets.on('connection', function (socket) {
 			socket.emit('questionsData', data.split('\n'));
 		});
 
-	});	
+	});
 });
