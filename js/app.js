@@ -37,11 +37,12 @@ pollingApp.config(function ($stateProvider, $urlRouterProvider) {
 	.state('poll', {
 		url: '/poll',
 		templateUrl: "views/poll/Poll.html",
-		controller: "PollsController",
-		onEnter: function(){
-			console.log('i went to poll state dude');
-			// socket.emit('questionsRequest');
-		}
+		controller: "PollsController"
+		// onEnter: function($scope, socket){
+		// 	$scope.first = "geo";
+		// 	console.log('i went to poll state dude' + '\n');
+		// 	// socket.emit('questionsRequest');
+		// }
 	})
 
 	.state('admin.polllist', {

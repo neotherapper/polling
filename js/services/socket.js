@@ -15,18 +15,12 @@ pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
     
     return {
         on: function (eventName, callback) {
-            function wrapper() {
+            socket.on(eventName, function (){
                 var args = arguments;
                 $rootScope.$apply(function () {
                     callback.apply(socket, args);
                 });
-            }
-
-            socket.on(eventName, wrapper);
-
-            return function () {
-                socket.removeListener(eventName, wrapper);
-            };
+            });
         },
 
         emit: function (eventName, data, callback) {
@@ -40,5 +34,5 @@ pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
             });
         }
 
-    };//return
+    };
   }]);

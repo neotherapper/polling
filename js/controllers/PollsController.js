@@ -1,13 +1,15 @@
 'use strict';
 
-pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie, Polls, socket) {
+pollingApp.controller('PollsController', function ($window, $rootScope, $scope, $state, ipCookie, socket) {
 	// our data
 	// Polls.get(function(Polls) {
 	// 	$scope.polls2=  Polls.Pollquestions;
+	// 	console.log(JSON.stringify($scope.polls2) + '   is  $scope.polls2-->  at the beginning');
 	// });
 
 	$scope.polls = [];
 	$scope.answeredQuestions = {};
+
 
 	// we send to the server is questionsRequest
 	socket.emit('questionsRequest');
@@ -22,7 +24,6 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 
 	$scope.checkAnsweredQuestions = function() {
 		var cookieData = ipCookie('answeredPolls');
-		console.log(cookieData + ' -->  this is cookieData');
 
 		if (cookieData) {
 			$scope.answeredQuestions = cookieData;
@@ -102,31 +103,67 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 		$state.go('admin.viewquestions');
 	});
 
-	// when we receive from the server the data for our questions we ..
-	socket.on('questionsData', function(data) {
+
+	$scope.init = function() {
+		socket.on('questionsData', function(data) {
 		console.log(data + ' this is the data we receive for the server');
-
 		$scope.polls = [];
-			var poll;
+		var poll;
 
-			for (poll in data) {
-				console.log(data[poll] + '    --> this is data[poll]');
-				if (data[poll]) {
-					if (data[poll].length > 0) {
-						//error handling for json parsing
-						// without that we get an error
-						try {
-							data[poll] = JSON.parse(data[poll]);
-							console.log(data[poll] + '    --> this is parsed data[poll]');
-							$scope.polls.unshift(data[poll]);
-						} catch (e) {
-							console.log('error parsing json for data[poll]');
-						}
-		
+		for (poll in data) {
+			// console.log(data[poll] + '    --> this is data[poll]');
+			if (data[poll]) {
+				if (data[poll].length > 0) {
+					//error handling for json parsing
+					// without that we get an error
+					try {
+						data[poll] = JSON.parse(data[poll]);
+						// console.log(data[poll] + '    --> this is parsed data[poll]');
+						$scope.polls.unshift(data[poll]);
+					} catch (e) {
+						console.log('error parsing json for data[poll]');
 					}
+	
 				}
 			}
-	});
+		}
+		// return $scope.polls
 
+	});
+	};
+
+
+	// when we receive from the server the data for our questions we ..
+	// socket.on('questionsData', function(data) {
+	// 	console.log(data + ' this is the data we receive for the server');
+	// 	$scope.polls = [];
+	// 	var poll;
+
+	// 	for (poll in data) {
+	// 		// console.log(data[poll] + '    --> this is data[poll]');
+	// 		if (data[poll]) {
+	// 			if (data[poll].length > 0) {
+	// 				//error handling for json parsing
+	// 				// without that we get an error
+	// 				try {
+	// 					data[poll] = JSON.parse(data[poll]);
+	// 					// console.log(data[poll] + '    --> this is parsed data[poll]');
+	// 					$scope.polls.unshift(data[poll]);
+	// 				} catch (e) {
+	// 					console.log('error parsing json for data[poll]');
+	// 				}
+	
+	// 			}
+	// 		}
+	// 	}
+
+
+	// 	console.log(JSON.stringify($scope.polls) + ' -->  after stringify');
+
+
+	// });
+	
 	$scope.checkAnsweredQuestions();
+
+	// console.log(JSON.stringify($scope.polls) + '   is  $scope.polls -->  at the end');
 });
