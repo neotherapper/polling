@@ -32,6 +32,16 @@ pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
                     }
                 });
             });
+        },
+
+        //added from http://stackoverflow.com/questions/21007164/why-do-my-socket-on-calls-multiply-whenever-i-recenter-my-controller/22424757#22424757
+        removeAllListeners: function (eventName, callback) {
+            socket.removeAllListeners(eventName, function() {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                    callback.apply(socket, args);
+                });
+            });
         }
 
     };

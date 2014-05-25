@@ -82,9 +82,9 @@ io.sockets.on('connection', function (socket) {
 	socket.on('questionsRequest', function() {
 		fs.readFile(__dirname+'/data.js', {encoding: 'utf8'}, function(err, data) {
                                         // the response will be an array with the values of data split by  '\n'
-                                        // var response = data;
+                                        
                                         var response = data.split('\n');
-                                        // console.log(response + '  this is the data sent to the client');
+                                        console.log(response + '  this is the data sent to the client');
 			socket.emit('questionsData', response);
 		});
 

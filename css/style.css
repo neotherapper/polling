@@ -5,3 +5,8 @@
 .polls-container {
 	margin-top: 10px;
 }
+
+/*for ng cloack*/
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}

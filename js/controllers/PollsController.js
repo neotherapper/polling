@@ -7,6 +7,16 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 	// 	console.log(JSON.stringify($scope.polls2) + '   is  $scope.polls2-->  at the beginning');
 	// });
 
+	//http://stackoverflow.com/questions/13323356/parsing-faulty-json-and-be-able-to-display-where-the-error-is
+	JSON._parse = JSON.parse;
+	JSON.parse = function (json) {
+		try {
+			return JSON._parse(json)
+		} catch(e) {
+			jsonlint.parse(json)
+		}
+	};
+
 	$scope.polls = [];
 	$scope.answeredQuestions = {};
 
@@ -92,6 +102,11 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 		socket.emit('newQuestion', newQ);
 	};
 
+	//added from http://stackoverflow.com/questions/21007164/why-do-my-socket-on-calls-multiply-whenever-i-recenter-my-controller/22424757#22424757
+	$scope.$on('$destroy', function (event) {
+		socket.removeAllListeners();
+	});
+
 	socket.on('pollUpdateSuccess', function(poll) {
 		$scope.refresh();
 	});
@@ -103,67 +118,42 @@ pollingApp.controller('PollsController', function ($window, $rootScope, $scope, 
 		$state.go('admin.viewquestions');
 	});
 
-
-	$scope.init = function() {
-		socket.on('questionsData', function(data) {
-		console.log(data + ' this is the data we receive for the server');
-		$scope.polls = [];
+	socket.on('questionsData', function(data) {
+		console.log('the data we receive for the server is .....');
+		console.dir(data);
+		if (typeof data === 'object') {
+			console.log('our server data  is an object');
+		};
+		var incoming = [];
 		var poll;
 
 		for (poll in data) {
-			// console.log(data[poll] + '    --> this is data[poll]');
-			if (data[poll]) {
+			console.log(poll + '    --> iteration');
+			console.log(data[poll] + '    --> this is data['+poll + ']');
+			if (data[poll] && data.hasOwnProperty(poll)) {
+				var answer = data[poll];
+				console.log(answer.id);
 				if (data[poll].length > 0) {
 					//error handling for json parsing
 					// without that we get an error
-					try {
-						data[poll] = JSON.parse(data[poll]);
-						// console.log(data[poll] + '    --> this is parsed data[poll]');
-						$scope.polls.unshift(data[poll]);
-					} catch (e) {
-						console.log('error parsing json for data[poll]');
-					}
-	
+					
+					data[poll] = JSON.parse(data[poll]);
+					 console.log(JSON.stringify(data[poll]) + '    --> this is parsed data[poll]');
+					 incoming.unshift(data[poll]);
+					// try {
+					// 	data[poll] = JSON.parse(data[poll]);
+					// 	console.log(JSON.stringify(data[poll]) + '    --> this is parsed data[poll]');
+					// 	incoming.unshift(data[poll]);
+					// } catch (e) {
+					// 	console.log('error parsing json for data[poll]');
+					// }
+
 				}
 			}
 		}
-		// return $scope.polls
-
+		$scope.polls = incoming;
+		// $scope.polls = incoming.Pollquestions;
+		console.log(JSON.stringify(incoming) + '  this is our incoming');
 	});
-	};
-
-
-	// when we receive from the server the data for our questions we ..
-	// socket.on('questionsData', function(data) {
-	// 	console.log(data + ' this is the data we receive for the server');
-	// 	$scope.polls = [];
-	// 	var poll;
-
-	// 	for (poll in data) {
-	// 		// console.log(data[poll] + '    --> this is data[poll]');
-	// 		if (data[poll]) {
-	// 			if (data[poll].length > 0) {
-	// 				//error handling for json parsing
-	// 				// without that we get an error
-	// 				try {
-	// 					data[poll] = JSON.parse(data[poll]);
-	// 					// console.log(data[poll] + '    --> this is parsed data[poll]');
-	// 					$scope.polls.unshift(data[poll]);
-	// 				} catch (e) {
-	// 					console.log('error parsing json for data[poll]');
-	// 				}
-	
-	// 			}
-	// 		}
-	// 	}
-
-
-	// 	console.log(JSON.stringify($scope.polls) + ' -->  after stringify');
-
-
-	// });
-	
 	$scope.checkAnsweredQuestions();
-
-	// console.log(JSON.stringify($scope.polls) + '   is  $scope.polls -->  at the end');
 });
