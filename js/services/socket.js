@@ -7,7 +7,7 @@ pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
 
     // var socket = io.connect(window.location.hostname);
     // autodiscovery mode
-    var socket = io.connect();
+    var socket = io.connect('//vouched-for.herokuapp.com/:80/');
     // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
     // var socket = io.connect('http://localhost:5000', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling']});
     socket.on('news', function (data) {
