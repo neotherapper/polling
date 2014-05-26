@@ -2,7 +2,13 @@ var http = require("http"),
     url = require("url"),
     path = require("path"),
     fs = require("fs"),
-    port = process.env.PORT || 5000;
+
+//heroku
+var port = Number(process.env.PORT || 5000);
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
+
     // port = process.argv[2] || 8888;
 
 //creation of HTTP Server
@@ -37,12 +43,6 @@ var app = http.createServer(function(request, response) {
 }),
 
 io = require('socket.io').listen(app);
-
-app.listen(port, function () {
-  var addr = app.address();
-  console.log('   app listening on http://' + addr.address + ':' + addr.port);
-});
-
 
 
 // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
