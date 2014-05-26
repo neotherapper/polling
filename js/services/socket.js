@@ -5,9 +5,9 @@
 
 pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
 
-    // var socket = io.connect('http://localhost:4000');
+    var socket = io.connect(window.location.hostname);
     // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
-    var socket = io.connect('http://localhost:5000', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling']});
+    // var socket = io.connect('http://localhost:5000', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling']});
     socket.on('news', function (data) {
         console.log(data);
         socket.emit('my other event', { my: 'data' });
