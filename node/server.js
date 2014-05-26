@@ -46,7 +46,9 @@ io.sockets.on('connection', function (socket) {
             // when we receive newQuestion from the client we .. 
             // .. write to the data.js file the answer from Add New Question form
 	socket.on('newQuestion', function (data) {
-		fs.appendFile(__dirname+'/data.js', JSON.stringify(data) + '\n', function(err) {
+                        // in order the data.js file to be transformed at the client side into json we have
+                        // to put , between question
+		fs.appendFile(__dirname+'/data.js', ',' + JSON.stringify(data) + '\n', function(err) {
 			if (err) throw err;
                                         // we tell the client that the server has saved the Question.
 			socket.emit('newQuestionSaved');
@@ -58,20 +60,33 @@ io.sockets.on('connection', function (socket) {
 	socket.on('pollUpdate', function(poll) {
                          // .. read the data.js file  and put them to .. 
                          //  .. contents  that will be an array with the values of data split by  '\n'
-		var line, parsedLine, contents = fs.readFileSync(__dirname+'/data.js', {encoding: 'utf8'}).split('\n');
-		
-                          // console.log(contents +  '   this is the array contents');
-		for (line in contents) {
-			if (contents[line].length > 0) {
-				parsedLine = JSON.parse(contents[line]);
-				if (parsedLine.id == poll.id) {
-					contents[line] = JSON.stringify(poll);
-				}
-			}
-			else contents.splice(line, 1);
-		}
+		var item, parsedLine, polls = fs.readFileSync(__dirname+'/data.js', {encoding: 'utf8'});
 
-		fs.writeFile(__dirname+'/data.js', contents.join('\n'), function(err) {
+                        polls = "[" + polls+ "]";
+
+                        try {
+                            polls = JSON.parse(polls);
+                        } catch (e) {
+                            console.log(' error parsing polls');
+                        }
+
+                        console.log(polls);
+
+                        for (item in polls) {
+                            // we found our updated poll
+                            // we break  from the loop
+                            if (polls[item].id === poll.id) {
+                                polls.splice(item, 1, poll);
+                                break;
+                            }
+                        }
+
+                        polls = JSON.stringify(polls);
+
+                        // we delete [] that we added
+                        polls = polls.substring(1, polls.length-1);
+
+		fs.writeFile(__dirname+'/data.js', polls, function(err) {
 			if (err) throw err;
 			socket.emit('pollUpdateSuccess', poll);
 		});
@@ -81,10 +96,7 @@ io.sockets.on('connection', function (socket) {
              // .. read data.js  and we send back the data stored to the client
 	socket.on('questionsRequest', function() {
 		fs.readFile(__dirname+'/data.js', {encoding: 'utf8'}, function(err, data) {
-                                        // the response will be an array with the values of data split by  '\n'
-                                        
-                                        var response = data.split('\n');
-                                        console.log(response + '  this is the data sent to the client');
+                                        var response = data;
 			socket.emit('questionsData', response);
 		});
 

@@ -38,24 +38,6 @@ pollingApp.config(function ($stateProvider, $urlRouterProvider) {
 		url: '/poll',
 		templateUrl: "views/poll/Poll.html",
 		controller: "PollsController"
-		// onEnter: function($scope, socket){
-		// 	$scope.first = "geo";
-		// 	console.log('i went to poll state dude' + '\n');
-		// 	// socket.emit('questionsRequest');
-		// }
-	})
-
-	.state('admin.polllist', {
-		url: '/list',
-		templateUrl: "views/poll/pollingList.html",
-		controller: "PollingListController"
-	})
-
-	.state('admin.pollist.pollitem', {
-		url: '/:pollid',
-		templateUrl: "views/poll/pollitem.html",
-		controller: "PollingListController"
 	});
-
 		
 });
