@@ -35,8 +35,16 @@ var app = http.createServer(function(request, response) {
     });
   });
 }),
-app.listen(port);
-io = require('socket.io').listen(app),
+
+io = require('socket.io').listen(app);
+
+app.listen(port, function () {
+  var addr = app.address();
+  console.log('   app listening on http://' + addr.address + ':' + addr.port);
+});
+
+
+
 // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
 // io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app);
 fs = require('fs');
