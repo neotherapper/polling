@@ -2,14 +2,8 @@ var http = require("http"),
     url = require("url"),
     path = require("path"),
     fs = require("fs"),
-
-//heroku
-var port = Number(process.env.PORT || 5000);
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});
-
-    // port = process.argv[2] || 8888;
+    port = Number(process.env.PORT || 5000);
+// port = process.argv[2] || 8888;
 
 //creation of HTTP Server
 var app = http.createServer(function(request, response) {
@@ -40,7 +34,11 @@ var app = http.createServer(function(request, response) {
       response.end();
     });
   });
-}),
+});
+
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
 
 io = require('socket.io').listen(app);
 
