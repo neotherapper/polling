@@ -39,7 +39,7 @@ var app = http.createServer(function(request, response) {
 io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app),
 fs = require('fs');
 
-app.listen(4000);
+app.listen(5000);
 
 io.sockets.on('connection', function (socket) {
 

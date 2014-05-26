@@ -1,0 +1,31 @@
+{
+  "name": "polling",
+  "version": "0.0.0",
+  "description": "Polling for the masses",
+  "main": "node/server.js",
+  "dependencies": {
+    "socket.io": "~0.9.16"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+    "engines": {
+    "node": ">=0.10.0",
+    "npm": "1.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neotherapper/polling.git"
+  },
+  "keywords": [
+    "polling",
+    "heroku"
+  ],
+  "author": "George Pilitsoglou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neotherapper/polling/issues"
+  },
+  "homepage": "https://github.com/neotherapper/polling"
+}
