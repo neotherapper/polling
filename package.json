@@ -1,6 +1,6 @@
 {
   "name": "polling",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Polling for the masses",
   "main": "node/server.js",
   "dependencies": {
