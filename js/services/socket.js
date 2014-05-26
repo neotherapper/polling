@@ -5,7 +5,7 @@
 
 pollingApp.factory('socket', ['$rootScope', function ($rootScope) {
 
-    var socket = io.connect(window.location.hostname);
+    // var socket = io.connect(window.location.hostname);
     // autodiscovery mode
     var socket = io.connect();
     // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
