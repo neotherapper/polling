@@ -40,7 +40,7 @@ io = require('socket.io').listen(app),
 // io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app);
 fs = require('fs');
 
-app.listen(port);
+// app.listen(port);
 
 io.sockets.on('connection', function (socket) {
 
