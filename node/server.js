@@ -37,7 +37,7 @@ var app = http.createServer(function(request, response) {
 }),
 // io = require('socket.io',).listen(app),
 // fixed http://stackoverflow.com/questions/8350630/nodejs-with-socket-io-delay-emitting-data
-io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app),
+io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] }).listen(app);
 fs = require('fs');
 
 app.listen(5000);
